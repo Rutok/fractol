@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 07:06:55 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/18 10:18:24 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/18 11:03:47 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	init_mandelbrot(t_frac_gen *gen)
 	gen->max.y = 1.2;
 	gen->min.x = -2.1;
 	gen->min.y = -1.2;
-	gen->it = 50;
-	gen->base_it = 50;
+	gen->it = 200;
+	gen->base_it = 200;
 }
 
 void	process_mandelbrot(t_2ipair c, t_pair point, t_env *env)
@@ -88,8 +88,8 @@ void	init_julia(t_frac_gen *gen)
 	gen->max.y = 1.2;
 	gen->min.x = -1;
 	gen->min.y = -1.2;
-	gen->it = 50;
-	gen->base_it = 50;
+	gen->it = 200;
+	gen->base_it = 200;
 }
 
 void	process_julia(t_2ipair c, t_pair point, t_env *env)

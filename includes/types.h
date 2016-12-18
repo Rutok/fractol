@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 04:36:59 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/18 09:42:24 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/18 23:05:13 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct	s_event
 	t_2ipair	mouse_pos;
 	t_bool		switch_mandelbrot;
 	t_bool		switch_julia;
+	t_bool		no_event;
 }				t_event;
 
 typedef struct	s_renderer

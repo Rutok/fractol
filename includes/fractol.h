@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 03:54:14 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/18 10:07:38 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/18 23:59:30 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define WIN_NAME "Fractol"
 # define WIN_WIDTH 1280
 # define WIN_HEIGHT 720
+# define FPS 60
 
 /*
  * Init SDL modules, and create data structures

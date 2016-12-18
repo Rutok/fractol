@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 05:15:18 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/18 10:14:48 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/18 23:15:28 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	event_process(t_event *event)
 	event_reset(event);
 	while (SDL_PollEvent(&ev))
 	{
+		event->no_event = 0;
 		if (ev.type == SDL_QUIT)
 			event->exit = 1;
 		else if (ev.type == SDL_KEYDOWN)
@@ -40,6 +41,7 @@ void	event_reset(t_event *event)
 	event->mouse_move = 0;
 	event->switch_julia = 0;
 	event->switch_mandelbrot = 0;
+	event->no_event = 1;
 }
 
 void	event_handle_keyboard(SDL_Event *ev, t_event *event)
