@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 14:13:39 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/20 16:42:33 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	process_gen(t_env *env)
 {
 	static t_frac_gen prev;
 	t_2ipair	c;
-	t_pair		point;
+	t_2dpair		point;
 	t_frac_gen	*gen;
 
 	gen = (t_frac_gen *)env->app.d;
@@ -79,10 +79,10 @@ void	init_mandelbrot(t_frac_gen *gen)
 	gen->base_it = 200;
 }
 
-void	process_mandelbrot(t_2ipair c, t_pair point, t_env *env)
+void	process_mandelbrot(t_2ipair c, t_2dpair point, t_env *env)
 {
-	t_pair		z;
-	t_pair		tmp;
+	t_2dpair		z;
+	t_2dpair		tmp;
 	int			i;
 	t_frac_gen	*gen;
 
@@ -111,10 +111,10 @@ void	init_julia(t_frac_gen *gen)
 	gen->base_it = 200;
 }
 
-void	process_julia(t_2ipair c, t_pair point, t_env *env)
+void	process_julia(t_2ipair c, t_2dpair point, t_env *env)
 {
-	t_pair		z;
-	t_pair		tmp;
+	t_2dpair		z;
+	t_2dpair		tmp;
 	int			i;
 	t_frac_gen	*gen;
 

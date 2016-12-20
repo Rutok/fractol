@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 14:04:30 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/20 16:43:09 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	process_more(t_event *event, t_env *env)
 {
-	t_pair	step;
+	t_2dpair	step;
 	t_frac_gen *gen;
 
 	gen = (t_frac_gen *)env->app.d;
@@ -55,7 +55,7 @@ static void	process_more(t_event *event, t_env *env)
 
 void	process_gen_event(t_event *event, t_env *env)
 {
-	t_pair	step;
+	t_2dpair	step;
 	t_frac_gen *gen;
 
 	gen = (t_frac_gen *)env->app.d;
