@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 04:36:59 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 13:49:22 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/20 16:24:57 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,6 @@
 
 # include <SDL2/SDL.h>
 # include "libft.h"
-
-typedef unsigned char	t_bool;
-
-typedef unsigned int	uint32;
-
-typedef struct	s_2ipair
-{
-	int	x;
-	int	y;
-}				t_2ipair;
-
-typedef struct	s_2dpair
-{
-	double	x;
-	double	y;
-}				t_2dpair;
-
-typedef struct	s_3dvertex
-{
-	double	x;
-	double	y;
-	double	z;
-}				t_3dvertex;
 
 typedef struct	s_win
 {
