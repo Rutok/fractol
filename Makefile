@@ -2,12 +2,13 @@ NAME = fractol
 
 FLG = -Wall -Wextra -Werror
 
-SRC = srcs/fractol.c \
+SRC = srcs/engine.c \
 	  srcs/error.c \
 	  srcs/event.c \
 	  srcs/drawer.c \
-	  srcs/fractales_generator.c \
-	  srcs/fractales_editor.c \
+	  srcs/fractol_gen.c \
+	  srcs/fractol_event.c \
+	  srcs/main.c \
 
 OBJ = $(SRC:%.c=%.o)
 
