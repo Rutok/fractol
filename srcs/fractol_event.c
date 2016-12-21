@@ -6,13 +6,15 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 16:43:09 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/20 18:05:50 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol_gen.h"
 #include "fractol_event.h"
 #include "libft.h"
+#include "mandelbrot.h"
+#include "julia.h"
 
 static void	process_more(t_event *event, t_env *env)
 {

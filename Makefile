@@ -3,12 +3,14 @@ NAME = fractol
 FLG = -Wall -Wextra -Werror
 
 SRC = srcs/engine.c \
-	  srcs/error.c \
-	  srcs/event.c \
 	  srcs/drawer.c \
+	  srcs/event.c \
+	  srcs/error.c \
+	  srcs/main.c \
 	  srcs/fractol_gen.c \
 	  srcs/fractol_event.c \
-	  srcs/main.c \
+	  srcs/mandelbrot.c \
+	  srcs/julia.c \
 
 OBJ = $(SRC:%.c=%.o)
 
