@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:01:25 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 18:03:23 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/21 04:44:51 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define FRACTALES_GENERATOR_H
 
 # include "types.h"
+
+typedef struct	s_camera
+{
+	t_3dvertex	pos;
+	t_3dvertex	org;
+	double		zoom;
+}				t_camera;
 
 typedef enum	e_fractales
 {
@@ -28,6 +35,7 @@ typedef struct	s_frac_gen
 	int			it;
 	int			base_it;
 	t_fractales	current;
+	t_camera	camera;;
 }				t_frac_gen;
 
 void	init_gen(t_env *env);

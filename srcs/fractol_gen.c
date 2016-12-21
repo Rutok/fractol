@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 18:03:06 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/21 07:45:23 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #include "mandelbrot.h"
 #include "julia.h"
 
-static double	map(int x, int minx, int maxx, double nminx, double nmaxx)
+/*static double	map(int x, int minx, int maxx, double nminx, double nmaxx)
 {
-	return ((x / (double)(maxx - minx)) * (nmaxx - nminx));
-}
+	return ((x / (double)(maxx - minx)) * (nmaxx - nminx) + nminx);
+}*/
 
 void	init_gen(t_env *env)
 {
@@ -35,10 +35,11 @@ void	init_gen(t_env *env)
 
 void	process_gen(t_env *env)
 {
-	static t_frac_gen prev;
-	t_2ipair	c;
-	t_2dpair		point;
-	t_frac_gen	*gen;
+	static t_frac_gen	prev;
+	t_2ipair			c;
+	t_2dpair			point;
+	t_frac_gen			*gen;
+	t_2dpair			f;
 
 	gen = (t_frac_gen *)env->app.d;
 	c.x = 0;
@@ -52,8 +53,10 @@ void	process_gen(t_env *env)
 			c.y = 0;
 			while (c.y < env->rend.size.y)
 			{
-				point.x = map(c.x, 0, env->rend.size.x, gen->min.x, gen->max.x) + gen->min.x;
-				point.y = map(c.y, 0, env->rend.size.y, gen->min.y, gen->max.y) + gen->min.y;
+				f.x = gen->camera.pos.x - gen->camera.org.x;
+				f.y = gen->camera.pos.y - gen->camera.org.y;
+				point.x = (c.x / gen->camera.zoom) + f.x - ((env->rend.size.x / 2) / gen->camera.zoom);
+				point.y = (c.y / gen->camera.zoom) + f.y - ((env->rend.size.y / 2) / gen->camera.zoom);
 				if (gen->current == mandelbrot)
 					process_mandelbrot(c, point, env);
 				else if (gen->current == julia)

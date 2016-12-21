@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 17:59:36 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 18:04:11 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/21 07:05:56 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	init_julia(t_frac_gen *gen)
 	gen->max.y = 1.2;
 	gen->min.x = -1;
 	gen->min.y = -1.2;
+	gen->camera.pos.x = (gen->max.x - gen->min.x) / 2;
+	gen->camera.org.x = (gen->max.x - gen->min.x) / 2;
+	gen->camera.pos.y = (gen->max.y - gen->min.y) / 2;
+	gen->camera.org.y = (gen->max.y - gen->min.y) / 2;
+	gen->camera.zoom = 100;
 	gen->it = 200;
 	gen->base_it = 200;
 }
