@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 05:15:18 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 13:08:57 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/21 09:15:17 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	event_process(t_event *event)
 			event->exit = 1;
 		else if (ev.type == SDL_KEYDOWN)
 			event_handle_keyboard(&ev, event);
-		else if (ev.type == SDL_MOUSEMOTION)
+		else if (ev.type == SDL_MOUSEMOTION || ev.type == SDL_MOUSEBUTTONUP)
 			event_handle_mouse(&ev, event);
 	}
 }
@@ -38,6 +38,7 @@ void	event_reset(t_event *event)
 	event->plus = 0;
 	event->minus = 0;
 	event->mouse_move = 0;
+	event->mouse_click = 0;
 	event->key_f1= 0;
 	event->key_f2= 0;
 	event->draw = 0;
@@ -70,7 +71,16 @@ void	event_handle_keyboard(SDL_Event *ev, t_event *event)
 
 void	event_handle_mouse(SDL_Event *ev, t_event *event)
 {
-	event->mouse_move = 1;
-	event->mouse_pos.x = ev->motion.x;
-	event->mouse_pos.y = ev->motion.y;
+	if (ev->type == SDL_MOUSEMOTION)
+	{
+		event->mouse_move = 1;
+		event->mouse_pos.x = ev->motion.x;
+		event->mouse_pos.y = ev->motion.y;
+	}
+	else
+	{
+		event->mouse_click = 1;
+		event->mouse_pos.x = ev->button.x;
+		event->mouse_pos.y = ev->button.y;
+	}
 }

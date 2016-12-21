@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 04:36:59 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 17:35:43 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/21 08:55:05 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct	s_event
 	t_bool		plus;
 	t_bool		minus;
 	t_bool		mouse_move;
+	t_bool		mouse_click;
 	t_2ipair	mouse_pos;
 	t_bool		key_f1;
 	t_bool		key_f2;
