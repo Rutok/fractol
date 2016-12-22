@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 05:15:18 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/21 09:15:17 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/22 14:38:29 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	event_process(t_event *event)
 {
 	SDL_Event	ev;
 
-	event_reset(event);
+//	event_reset(event);
 	while (SDL_PollEvent(&ev))
 	{
 		if (ev.type == SDL_QUIT)

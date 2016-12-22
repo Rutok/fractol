@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:01:25 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/21 04:44:51 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/22 15:10:59 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ typedef struct	s_frac_gen
 	t_camera	camera;;
 }				t_frac_gen;
 
-void	init_gen(t_env *env);
+void	init_app(t_env *env);
 
-void	process_gen(t_env *env);
+int		process_app(void *env);
 
 #endif

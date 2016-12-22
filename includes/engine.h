@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:00:13 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 14:00:20 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/22 12:31:18 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 # include "types.h"
 # include "event.h"
 
-# define FPS 60
+# define FPS 600
 
 /*
  * Init SDL modules, and create data structures
 */
-void	engine_init(t_env *env, void (*init)(t_env *), void (*process)(t_env *), void (*destroy)(t_env *));
+void	engine_init(t_env *env, void (*init)(t_env *), int (*process)(void *), void (*destroy)(t_env *));
 
 /*
  * Run the actual program

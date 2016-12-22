@@ -12,6 +12,7 @@ SRC = srcs/engine.c \
 	  srcs/mandelbrot.c \
 	  srcs/julia.c \
 
+
 OBJ = $(SRC:%.c=%.o)
 
 INC = -I./includes \
@@ -25,7 +26,7 @@ all: $(NAME)
 
 $(NAME):
 	make -C libft
-	gcc $(FLG) $(SRC) $(INC) $(LIB) -lm -lft -framework SDL2 -o $(NAME) -O3
+	gcc $(FLG) $(SRC) $(INC) $(LIB) -lm -lft -lSDL2 -o $(NAME) -O3
 
 clean:
 	make -C libft clean

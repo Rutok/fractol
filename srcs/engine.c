@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:00:35 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/20 14:00:38 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/22 14:19:05 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "libft.h"
 #include "error.h"
 #include "drawer.h"
+#include "SDL2/SDL_thread.h"
 
-void	engine_init(t_env *env, void (*init)(t_env *), void (*process)(t_env *), void (*destroy)(t_env *))
+void	engine_init(t_env *env, void (*init)(t_env *), int (*process)(void *), void (*destroy)(t_env *))
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		ft_exit(MSG_SDL_INIT_FAILED);
@@ -36,17 +37,17 @@ int		engine_run(t_env *env)
 	event_reset(&env->event);
 	etime = 0;
 	time = SDL_GetTicks();
+	env->thread = SDL_CreateThread(env->app.process, "Child", env);
 	while (!env->event.exit)
 	{
 		etime = SDL_GetTicks() - time;
 		if (etime < 1000 / FPS)
 			SDL_Delay((1000 / FPS) - etime);
 		time = SDL_GetTicks();
-		env->app.process(env);
-		if (env->event.draw)
-			drawer_process(&env->rend);
 		event_process(&env->event);
+		drawer_process(&env->rend);
 	}
+	SDL_WaitThread(env->thread, &time);
 	engine_destroy(env);
 	return (0);
 }

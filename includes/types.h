@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 04:36:59 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/21 08:55:05 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/22 14:09:31 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ typedef struct	s_renderer
 	SDL_Renderer	*rend_sdl;
 	SDL_Texture		*texture_sdl;
 	uint32			*pixels;
+	uint32			*pixels2;
 	t_2ipair		size;
+	t_bool			ready;
+	t_bool			draw;
 }				t_renderer;
 
 typedef struct	s_event
@@ -53,7 +56,7 @@ typedef struct s_env t_env;
 typedef struct	s_app
 {
 	void	(*init)(t_env *);
-	void	(*process)(t_env *);
+	int	(*process)(void *);
 	void	(*destroy)(t_env *);
 	void	*d;
 	int		argc;
@@ -66,6 +69,7 @@ typedef struct s_env
 	t_event	event;
 	t_renderer	rend;
 	t_app		app;
+	SDL_Thread	*thread;
 }				t_env;
 
 #endif

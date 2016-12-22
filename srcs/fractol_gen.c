@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/21 07:45:23 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/22 14:40:55 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 #include "julia.h"
 
 /*static double	map(int x, int minx, int maxx, double nminx, double nmaxx)
-{
-	return ((x / (double)(maxx - minx)) * (nmaxx - nminx) + nminx);
-}*/
+  {
+  return ((x / (double)(maxx - minx)) * (nmaxx - nminx) + nminx);
+  }*/
 
-void	init_gen(t_env *env)
+void	init_app(t_env *env)
 {
 	t_frac_gen	*gen;
 
@@ -33,38 +33,50 @@ void	init_gen(t_env *env)
 	init_mandelbrot(gen);
 }
 
-void	process_gen(t_env *env)
+int	process_app(void *venv)
 {
+	t_env *env = (t_env *)venv;
 	static t_frac_gen	prev;
 	t_2ipair			c;
 	t_2dpair			point;
 	t_frac_gen			*gen;
 	t_2dpair			f;
 
-	gen = (t_frac_gen *)env->app.d;
-	c.x = 0;
-	process_gen_event(&env->event, env);
-	if (ft_memcmp(gen, &prev, sizeof(t_frac_gen)))
+	while (!env->event.exit)
 	{
-		env->event.draw = 1;
-		drawer_clean(&env->rend);
-		while (c.x < env->rend.size.x)
+		gen = (t_frac_gen *)env->app.d;
+		c.x = 0;
+		process_gen_event(&env->event, env);
+		if (ft_memcmp(gen, &prev, sizeof(t_frac_gen)))
 		{
-			c.y = 0;
-			while (c.y < env->rend.size.y)
+			env->event.draw = 1;
+			drawer_clean(&env->rend);
+			while (c.x < env->rend.size.x)
 			{
-				f.x = gen->camera.pos.x - gen->camera.org.x;
-				f.y = gen->camera.pos.y - gen->camera.org.y;
-				point.x = (c.x / gen->camera.zoom) + f.x - ((env->rend.size.x / 2) / gen->camera.zoom);
-				point.y = (c.y / gen->camera.zoom) + f.y - ((env->rend.size.y / 2) / gen->camera.zoom);
-				if (gen->current == mandelbrot)
-					process_mandelbrot(c, point, env);
-				else if (gen->current == julia)
-					process_julia(c, point, env);
-				c.y++;
+				c.y = 0;
+				while (c.y < env->rend.size.y)
+				{
+					f.x = gen->camera.pos.x - gen->camera.org.x;
+					f.y = gen->camera.pos.y - gen->camera.org.y;
+					point.x = (c.x / gen->camera.zoom) + f.x - ((env->rend.size.x / 2) / gen->camera.zoom);
+					point.y = (c.y / gen->camera.zoom) + f.y - ((env->rend.size.y / 2) / gen->camera.zoom);
+					if (gen->current == mandelbrot)
+					{
+						process_mandelbrot(c, point, env);
+					//	gen->current = julia;
+					}
+					else if (gen->current == julia)
+					{
+						process_julia(c, point, env);
+					//	gen->current = mandelbrot;
+					}
+					c.y++;
+				}
+				c.x++;
 			}
-			c.x++;
 		}
+		prev = *gen;
+		drawer_wait_copy(env);
 	}
-	prev = *gen;
+	return (1);
 }
