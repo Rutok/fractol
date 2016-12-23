@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 05:15:18 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/22 14:38:29 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/23 01:00:30 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ void	event_reset(t_event *event)
 	event->minus = 0;
 	event->mouse_move = 0;
 	event->mouse_click = 0;
-	event->key_f1= 0;
-	event->key_f2= 0;
+	event->key_f1 = 0;
+	event->key_f2 = 0;
+	event->key_f3 = 0;
 	event->draw = 0;
 }
 
@@ -67,6 +68,8 @@ void	event_handle_keyboard(SDL_Event *ev, t_event *event)
 		event->key_f1= 1;
 	else if (k == SDLK_F2)
 		event->key_f2= 1;
+	else if (k == SDLK_F3)
+	event->key_f3 = 1;
 }
 
 void	event_handle_mouse(SDL_Event *ev, t_event *event)

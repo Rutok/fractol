@@ -11,6 +11,7 @@ SRC = srcs/engine.c \
 	  srcs/fractol_event.c \
 	  srcs/mandelbrot.c \
 	  srcs/julia.c \
+	  srcs/buddhabrot.c \
 
 
 OBJ = $(SRC:%.c=%.o)
@@ -26,7 +27,7 @@ all: $(NAME)
 
 $(NAME):
 	make -C libft
-	gcc $(FLG) $(SRC) $(INC) $(LIB) -lm -lft -lSDL2 -o $(NAME) -O3
+	gcc $(FLG) $(SRC) $(INC) $(LIB) -lm -lft -lSDL2 -o $(NAME) -O3 -g
 
 clean:
 	make -C libft clean

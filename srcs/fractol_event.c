@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/22 14:38:04 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/23 01:02:10 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "libft.h"
 #include "mandelbrot.h"
 #include "julia.h"
+#include "buddhabrot.h"
 
 static void	process_more(t_event *event, t_env *env)
 {
@@ -44,6 +45,12 @@ static void	process_more(t_event *event, t_env *env)
 		init_julia(gen);
 		gen->current = julia;
 		event->key_f2 = 0;
+	}
+	if (event->key_f3)
+	{
+		init_buddhabrot(gen);
+		gen->current = buddhabrot;
+		event->key_f3 = 0;
 	}
 
 }

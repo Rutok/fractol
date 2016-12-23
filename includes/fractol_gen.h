@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:01:25 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/22 15:10:59 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/23 00:54:44 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ typedef struct	s_camera
 typedef enum	e_fractales
 {
 	mandelbrot,
-	julia
+	julia,
+	buddhabrot
 }				t_fractales;
 
 typedef struct	s_frac_gen
