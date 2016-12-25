@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 04:36:59 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/23 00:59:38 by nboste           ###   ########.fr       */
+/*   Updated: 2016/12/25 09:07:03 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct	s_win
 	SDL_Window	*win_sdl;
 	t_2ipair	size;
 	char		*name;
+	t_bool		focus;
 }				t_win;
 
 typedef struct	s_renderer
@@ -37,6 +38,7 @@ typedef struct	s_renderer
 typedef struct	s_event
 {
 	t_bool		exit;
+	t_bool		focus;
 	t_bool		move_left;
 	t_bool		move_right;
 	t_bool		move_up;
