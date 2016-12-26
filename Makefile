@@ -2,11 +2,7 @@ NAME = fractol
 
 FLG = -Wall -Wextra -Werror
 
-SRC = srcs/engine.c \
-	  srcs/drawer.c \
-	  srcs/event.c \
-	  srcs/error.c \
-	  srcs/main.c \
+SRC = srcs/main.c \
 	  srcs/fractol_gen.c \
 	  srcs/fractol_event.c \
 	  srcs/mandelbrot.c \
@@ -17,24 +13,25 @@ SRC = srcs/engine.c \
 OBJ = $(SRC:%.c=%.o)
 
 INC = -I./includes \
-	  -I./libft/includes \
+	  -I./engine/libft/includes \
+	  -I./engine/includes \
 	  -I/usr/include \
-	  -I/usr/include/SDL2
 
-LIB = -L./libft
+LIB = -L./engine/libft \
+	  -L./engine \
 
 all: $(NAME)
 
 $(NAME):
-	make -C libft
-	gcc $(FLG) $(SRC) $(INC) $(LIB) -lm -lft -lSDL2 -o $(NAME) -O3 -g
+	make -C engine 
+	gcc $(FLG) $(LIB) $(INC) $(SRC) -lm -lengine -lft -lSDL2 -o $(NAME) -O3 -g
 
 clean:
-	make -C libft clean
+	make -C engine clean
 	rm -f $(NAME)
 
 fclean: clean
-	make -C libft fclean
+	make -C engine fclean
 	rm -rf $(OBJ)
 
 re: clean all
