@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 00:56:07 by nboste            #+#    #+#             */
-/*   Updated: 2017/01/07 22:55:53 by nboste           ###   ########.fr       */
+/*   Updated: 2017/01/09 16:40:35 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	init_buddhabrot(t_frac_gen *gen)
 	gen->camera.pos.y = (gen->max.y - gen->min.y) / 2;
 	gen->camera.org.y = (gen->max.y - gen->min.y) / 2;
 	gen->camera.zoom = 600;
-	gen->it = 20000;
-	gen->base_it = 20000;
+	gen->it = 1000;
+	gen->base_it = 1000;
 }
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
