@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2016/12/23 06:07:39 by nboste           ###   ########.fr       */
+/*   Updated: 2017/02/27 00:40:15 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,84 +17,70 @@
 #include "mandelbrot.h"
 #include "julia.h"
 #include "buddhabrot.h"
-
-/*static double	map(int x, int minx, int maxx, double nminx, double nmaxx)
-  {
-  return ((x / (double)(maxx - minx)) * (nmaxx - nminx) + nminx);
-  }*/
-
-static void	print_fps(void)
-{
-	static int time;
-	static int fps;
-
-	fps++;
-	if (!time)
-		time = SDL_GetTicks();
-	if (SDL_GetTicks() >= (Uint32)time + 1000)
-	{
-		ft_putstr("FPS : ");
-		ft_putnbr(fps);
-		ft_putchar('\n');
-		fps = 0;
-		time = SDL_GetTicks();
-	}
-}
+#include "camera.h"
 
 void	init_app(t_env *env)
 {
 	t_frac_gen	*gen;
+	t_camera	*cam;
 
 	if (!(env->app.d = malloc(sizeof(t_frac_gen))))
 		ft_exit(MSG_MALLOC);
 	gen = (t_frac_gen *)env->app.d;
-	gen->current = mandelbrot;
 	init_mandelbrot(gen);
+	cam = &gen->scene.camera;
+	init_camera(env, ft_degtorad(135), &gen->scene.camera);
+	cam->pos.x = 0;
+	cam->pos.y = 0;
+	cam->pos.z = 10;
+	cam->n.x = 0;
+	cam->n.y = 0;
+	cam->n.z = -1;
+	cam->v.x = 1;
+	cam->v.y = 0;
+	cam->v.z = 0;
+	cam->u.x = 0;
+	cam->u.y = 1;
+	cam->u.z = 0;
+	cam->projection = parallel;
 }
 
 int	process_app(void *venv)
 {
 	t_env *env = (t_env *)venv;
-	static t_frac_gen	prev;
-	t_2ipair			c;
-	t_2dpair			point;
 	t_frac_gen			*gen;
-	t_2dpair			f;
+	t_camera			*cam;
+	t_3dvertex			p;
+	t_3dvertex			c_s;
+	t_2ipair			i;
+	t_2dpair			c;
+	t_color				color;
 
-	while (!env->event.exit)
+	color.r = 0;
+	color.g = 0;
+	color.b = 0;
+	color.a = 0;
+	gen = (t_frac_gen *)env->app.d;
+	cam = &gen->scene.camera;
+	i.y = 0;
+	while (i.y < cam->size.y)
 	{
-		print_fps();
-		process_gen_event(&env->event, env);
-		gen = (t_frac_gen *)env->app.d;
-		if (ft_memcmp(gen, &prev, sizeof(t_frac_gen)) && !env->event.exit)
+		i.x = 0;
+		while (i.x < cam->size.x)
 		{
-			env->event.draw = 1;
-			drawer_clean(&env->rend);
-			c.x = 0;
-			while (c.x < env->rend.size.x)
-			{
-				c.y = 0;
-				while (c.y < env->rend.size.y)
-				{
-					if (env->event.exit)
-						return (1);
-					f.x = gen->camera.pos.x - gen->camera.org.x;
-					f.y = gen->camera.pos.y - gen->camera.org.y;
-					point.x = (c.x / gen->camera.zoom) + f.x - ((env->rend.size.x / 2) / gen->camera.zoom);
-					point.y = (c.y / gen->camera.zoom) + f.y - ((env->rend.size.y / 2) / gen->camera.zoom);
-					if (gen->current == mandelbrot)
-						process_mandelbrot(c, point, env);
-					else if (gen->current == julia)
-						process_julia(c, point, env);
-					else if (gen->current == buddhabrot)
-						process_buddhabrot(c, point, env);
-					c.y++;
-				}
-				c.x++;
-			}
-			drawer_wait_copy(env);
+			p.x = (i.x / cam->size.x) * (gen->max.x - gen->min.x) + gen->min.x;
+			p.y = (i.y / cam->size.y) * (gen->max.y - gen->min.y) + gen->min.y;
+			if (gen->current == mandelbrot)
+				process_mandelbrot(&p, gen);
+			color.r = 0;
+			if (p.z < gen->it)
+				color.r = 255 * (p.z / gen->it);
+			to_camera_space(&p, &c_s, cam);
+			camera_project_vertex(&c_s, &c, cam);
+			cam->pixels[i.y][i.x].color = color;
+			i.x++;
 		}
-		prev = *gen;
+		i.y++;
 	}
 	return (1);
 }

@@ -6,8 +6,8 @@ SRC = srcs/main.c \
 	  srcs/fractol_gen.c \
 	  srcs/fractol_event.c \
 	  srcs/mandelbrot.c \
-	  srcs/julia.c \
-	  srcs/buddhabrot.c \
+#	  srcs/julia.c \
+#	  srcs/buddhabrot.c \
 
 
 OBJ = $(SRC:%.c=%.o)
@@ -31,6 +31,14 @@ $(NAME):
 debug:
 	make -C engine 
 	gcc $(FLG) $(LIB) $(INC) $(SRC) -lm -lengine -lft -framework SDL2 -o $(NAME) -O3 -g
+
+linux:
+	make -C engine
+	gcc $(FLG) $(INC) $(SRC) $(LIB) -lm -lengine -lm -lft -lSDL2 -o $(NAME) -O3
+
+linuxd:
+	make -C engine
+	gcc $(FLG) $(LIB) $(INC) $(SRC) -lm -lengine -lft -lSDL2 -o $(NAME) -O3 -g -pg
 
 
 clean:
