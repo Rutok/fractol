@@ -26,7 +26,7 @@ all: $(NAME)
 
 $(NAME):
 	make -C engine 
-	gcc $(FLG) $(LIB) $(INC) $(SRC) -lm -lengine -lft -framework SDL2 -o $(NAME) -O3
+	gcc $(FLG) $(LIB) $(INC) $(SRC) -lm -lengine -lft -framework SDL2 -o $(NAME) -O3 -flto
 
 debug:
 	make -C engine 

@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:01:25 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/26 23:51:42 by nboste           ###   ########.fr       */
+/*   Updated: 2017/02/27 02:32:08 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct	s_frac_gen
 	int			base_it;
 	t_fractales	current;
 	t_scene		scene;
+	t_bool		draw;
 }				t_frac_gen;
 
 void	init_app(t_env *env);
