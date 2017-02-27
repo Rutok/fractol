@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/27 04:47:58 by nboste           ###   ########.fr       */
+/*   Updated: 2017/02/27 22:36:16 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "julia.h"
 #include "buddhabrot.h"
 #include "camera.h"
+#include <stdio.h>
 
 void	init_app(t_env *env)
 {
@@ -43,7 +44,7 @@ void	init_app(t_env *env)
 	cam->u.x = 1;
 	cam->u.y = 0;
 	cam->u.z = 0;
-	cam->projection = parallel;
+	cam->projection = perspective;
 	cam->speed = 50;
 	cam->sensitivity = 0.04;
 }
@@ -90,6 +91,7 @@ int	process_app(void *venv)
 	process_fractol_event(env);
 	if (gen->draw)
 	{
+		printf("maxx: %f minx: %f maxy: %f miny: %f\n", gen->max.x, gen->min.x, gen->max.y, gen->min.y);
 		gen->draw = 0;
 		color.r = 0;
 		color.g = 10;
@@ -97,13 +99,14 @@ int	process_app(void *venv)
 		color.a = 0;
 		cam = &gen->scene.camera;
 		i.y = 0;
-		while (i.y < cam->size.y)
+		while (i.y < cam->size.y + 10000)
 		{
 			i.x = 0;
-			while (i.x < cam->size.x)
+			while (i.x < cam->size.x + 10000)
 			{
 				p.x = (i.x / (double)(cam->size.x - 1)) * (gen->max.x - gen->min.x) + gen->min.x;
 				p.y = ((cam->size.y - 1 - i.y) / (double)(cam->size.y - 1)) * (gen->max.y - gen->min.y) + gen->min.y;
+				p.z = 0;
 				if (gen->current == mandelbrot)
 					process_mandelbrot(&p, gen);
 				color.r = 0;

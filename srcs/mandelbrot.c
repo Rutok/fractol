@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 17:51:24 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/27 02:35:51 by nboste           ###   ########.fr       */
+/*   Updated: 2017/02/27 22:36:22 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 
 void	init_mandelbrot(t_frac_gen *gen)
 {
-	gen->max.x = 0.6;
-	gen->max.y = 1.2;
-	gen->min.x = -2.1;
-	gen->min.y = -1.2;
-	gen->it = 200;
-	gen->base_it = 200;
+	gen->max.x = -0.116753;
+	gen->max.y = -0.595701;
+	gen->min.x = -0.524429;
+	gen->min.y = -0.701416;
+	gen->it = 20000;
+	gen->base_it = 20000;
 	gen->current = mandelbrot;
 }
 

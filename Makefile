@@ -34,7 +34,7 @@ debug:
 
 linux:
 	make -C engine
-	gcc $(FLG) $(INC) $(SRC) $(LIB) -lm -lengine -lm -lft -lSDL2 -o $(NAME) -O3
+	gcc $(FLG) $(INC) $(SRC) $(LIB) -lm -lengine -lm -lft -lSDL2 -o $(NAME) -O3 -flto
 
 linuxd:
 	make -C engine
