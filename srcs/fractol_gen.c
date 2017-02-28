@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/27 22:36:16 by nboste           ###   ########.fr       */
+/*   Updated: 2017/02/28 01:05:39 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	init_app(t_env *env)
 	cam->u.x = 1;
 	cam->u.y = 0;
 	cam->u.z = 0;
-	cam->projection = perspective;
+	cam->projection = parallel;
 	cam->speed = 50;
 	cam->sensitivity = 0.04;
 }
@@ -58,17 +58,17 @@ static t_color get_color(double z)
 	{
 		c.r = 0;
 		c.g = (z / 20) * 255;
-		c.b = 20;
+		c.b = 255;
 	}
 	else if (z < 60)
 	{
 		c.r = (z / 60) * 255;
-		c.g = 20;
+		c.g = 255;
 		c.b = 0;
 	}
 	else
 	{
-		c.r = 50;
+		c.r = 255;
 		c.g = 0;
 		c.b = (z / 200) * 255;
 	}
@@ -86,9 +86,11 @@ int	process_app(void *venv)
 	t_2dpair			c;
 	t_color				color;
 	double				d;
+	int					off;
 
 	gen = (t_frac_gen *)env->app.d;
 	process_fractol_event(env);
+	off = 0;
 	if (gen->draw)
 	{
 		printf("maxx: %f minx: %f maxy: %f miny: %f\n", gen->max.x, gen->min.x, gen->max.y, gen->min.y);
@@ -98,14 +100,15 @@ int	process_app(void *venv)
 		color.b = 10;
 		color.a = 0;
 		cam = &gen->scene.camera;
+		if (cam->projection == perspective)
+			off = 100000;
 		i.y = 0;
-		while (i.y < cam->size.y + 10000)
+		while (i.y < cam->size.y + off)
 		{
 			i.x = 0;
-			while (i.x < cam->size.x + 10000)
+			while (i.x < cam->size.x + off)
 			{
-				p.x = (i.x / (double)(cam->size.x - 1)) * (gen->max.x - gen->min.x) + gen->min.x;
-				p.y = ((cam->size.y - 1 - i.y) / (double)(cam->size.y - 1)) * (gen->max.y - gen->min.y) + gen->min.y;
+				p.x = (i.x / (double)(cam->size.x - 1)) * (gen->max.x - gen->min.x) + gen->min.x; p.y = ((cam->size.y - 1 - i.y) / (double)(cam->size.y - 1)) * (gen->max.y - gen->min.y) + gen->min.y;
 				p.z = 0;
 				if (gen->current == mandelbrot)
 					process_mandelbrot(&p, gen);
