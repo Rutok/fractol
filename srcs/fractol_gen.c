@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/28 01:05:39 by nboste           ###   ########.fr       */
+/*   Updated: 2017/03/04 03:32:05 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "julia.h"
 #include "buddhabrot.h"
 #include "camera.h"
+#include "camera_drawer.h"
 #include <stdio.h>
 
 void	init_app(t_env *env)
@@ -47,31 +48,16 @@ void	init_app(t_env *env)
 	cam->projection = parallel;
 	cam->speed = 50;
 	cam->sensitivity = 0.04;
+	gen->offset = 0;
 }
 
 static t_color get_color(double z)
 {
 	t_color c;
 
-	c.a = 0;
-	if (z < 20)
-	{
-		c.r = 0;
-		c.g = (z / 20) * 255;
-		c.b = 255;
-	}
-	else if (z < 60)
-	{
-		c.r = (z / 60) * 255;
-		c.g = 255;
-		c.b = 0;
-	}
-	else
-	{
-		c.r = 255;
-		c.g = 0;
-		c.b = (z / 200) * 255;
-	}
+	c.r = (unsigned char)(sin(0.016 * z + 4) * 230 + 25);
+	c.g = (unsigned char)(sin(0.013 * z + 2) * 230 + 25);
+	c.b = (unsigned char)(sin(0.01 * z + 1) * 230 + 25);
 	return (c);
 }
 
@@ -86,11 +72,10 @@ int	process_app(void *venv)
 	t_2dpair			c;
 	t_color				color;
 	double				d;
-	int					off;
+	t_point				p1;
 
 	gen = (t_frac_gen *)env->app.d;
 	process_fractol_event(env);
-	off = 0;
 	if (gen->draw)
 	{
 		printf("maxx: %f minx: %f maxy: %f miny: %f\n", gen->max.x, gen->min.x, gen->max.y, gen->min.y);
@@ -100,15 +85,14 @@ int	process_app(void *venv)
 		color.b = 10;
 		color.a = 0;
 		cam = &gen->scene.camera;
-		if (cam->projection == perspective)
-			off = 100000;
 		i.y = 0;
-		while (i.y < cam->size.y + off)
+		while (i.y < cam->size.y + (gen->offset / cam->ratio))
 		{
 			i.x = 0;
-			while (i.x < cam->size.x + off)
+			while (i.x < cam->size.x + (gen->offset))
 			{
-				p.x = (i.x / (double)(cam->size.x - 1)) * (gen->max.x - gen->min.x) + gen->min.x; p.y = ((cam->size.y - 1 - i.y) / (double)(cam->size.y - 1)) * (gen->max.y - gen->min.y) + gen->min.y;
+				p.x = (i.x / (double)(cam->size.x - 1) + gen->offset) * (gen->max.x - gen->min.x) + gen->min.x;
+				p.y = ((cam->size.y - 1 + (gen->offset / cam->ratio)- i.y) / (double)(cam->size.y - 1 + (gen->offset / cam->ratio))) * (gen->max.y - gen->min.y) + gen->min.y;
 				p.z = 0;
 				if (gen->current == mandelbrot)
 					process_mandelbrot(&p, gen);
@@ -123,15 +107,13 @@ int	process_app(void *venv)
 						d = (p.x * p.x) + (p.y * p.y) + (p.z * p.z);
 						color = get_color(p.z);
 						camera_project_vertex(&c_s, &c, cam);
-						c_s.z /= 20;
-						if (c.y >= 0 && c.y < cam->size.y && c.x >= 0 && c.x < cam->size.x)
-						{
-							if (cam->pixels[(int)c.y][(int)c.x].z_buffer == -1 || cam->pixels[(int)c.y][(int)c.x].z_buffer > d)
-							{
-								cam->pixels[(int)c.y][(int)c.x].color = color;
-								cam->pixels[(int)c.y][(int)c.x].z_buffer = d;
-							}
-						}
+						c.x = ((c.x) / (cam->size.x - 1 + (gen->offset))) * (cam->size.x - 1);
+						c.y = ((c.y) / (cam->size.y - 1 + (gen->offset / cam->ratio))) * (cam->size.y - 1);
+						p1.pos.x = round(c.x);
+						p1.pos.y = round(c.y);
+						p1.z = d;
+						p1.c = color;
+						camera_draw_point(&p1, cam, env);
 					}
 				}
 				i.x++;

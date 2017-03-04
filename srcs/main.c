@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 12:37:05 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/28 00:46:48 by nboste           ###   ########.fr       */
+/*   Updated: 2017/03/02 00:03:46 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int		main(int argc, char **argv)
 	env.app.argc = argc;
 	env.app.argv = argv;
 	env.win.name = ft_strdup("fract'ol");
-	env.win.size.x = 2560;
-	env.win.size.y = 1440;
+	env.win.size.x = 1920;
+	env.win.size.y = 1080;
 	engine_init(&env, &init_app, &process_app, NULL);
 	return (engine_run(&env));
 }

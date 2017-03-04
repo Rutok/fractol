@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/28 00:59:11 by nboste           ###   ########.fr       */
+/*   Updated: 2017/03/02 00:26:31 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,15 @@ void	process_fractol_event(t_env *env)
 	if (ev->keys[SDL_SCANCODE_K])
 	{
 		cam->speed *= .9;
+	}
+	if (ev->keys[SDL_SCANCODE_U])
+	{
+		f->offset += 100;
+		f->draw = 1;
+	}
+	if (ev->keys[SDL_SCANCODE_J])
+	{
+		f->offset -= 100;
+		f->draw = 1;
 	}
 }
