@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 17:51:24 by nboste            #+#    #+#             */
-/*   Updated: 2017/02/28 00:52:56 by nboste           ###   ########.fr       */
+/*   Updated: 2017/03/10 04:47:05 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ void	process_mandelbrot(t_3dvertex *point, t_frac_gen *gen)
 		z.y = 2 * tmp.x * z.y + point->y;
 		i++;
 	}
-	point->z = i;
+	point->z = -i;
 }
