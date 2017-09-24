@@ -6,7 +6,7 @@ SRC = srcs/main.c \
 	  srcs/fractol_gen.c \
 	  srcs/fractol_event.c \
 	  srcs/mandelbrot.c \
-#	  srcs/julia.c \
+	  srcs/julia.c \
 #	  srcs/buddhabrot.c \
 
 

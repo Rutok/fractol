@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2017/03/10 16:30:15 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/24 08:51:04 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,16 @@ void	process_fractol_event(t_env *env)
 	if (ev->keys[SDL_SCANCODE_J])
 	{
 		f->offset -= 100;
+		f->draw = 1;
+	}
+	if (ev->keys[SDL_SCANCODE_F1])
+	{
+		init_mandelbrot(f);
+		f->draw = 1;
+	}
+	if (ev->keys[SDL_SCANCODE_F2])
+	{
+		init_julia(f);
 		f->draw = 1;
 	}
 }

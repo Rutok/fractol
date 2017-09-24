@@ -6,17 +6,12 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 17:51:24 by nboste            #+#    #+#             */
-/*   Updated: 2017/03/10 04:47:05 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/24 08:49:03 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mandelbrot.h"
 #include "drawer.h"
-
-/*static uint32	get_color(double ratio)
-  {
-  return ((int)(0xFF * ratio) << 8);
-  }*/
 
 void	init_mandelbrot(t_frac_gen *gen)
 {

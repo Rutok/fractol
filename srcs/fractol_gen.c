@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/03/10 16:32:33 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/24 08:51:32 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ int	process_app(void *venv)
 				p.z = 0;
 				if (gen->current == mandelbrot)
 					process_mandelbrot(&p, gen);
+				if (gen->current == julia)
+					process_julia(&p, gen);
 				if (p.z != -gen->it)
 				{
 					if(zminmax.x < p.z)
@@ -155,10 +157,11 @@ int	process_app(void *venv)
 				p.z = 0;
 				if (gen->current == mandelbrot)
 					process_mandelbrot(&p, gen);
+				if (gen->current == julia)
+					process_julia(&p, gen);
 				color.r = 0;
 				if (p.z != -gen->it)
 				{
-					//	p.z *= 100;
 					p.x = ((i.x) / (double)(cam->size.x + gen->offset)) * cam->size.x - (cam->size.x / 2);
 					p.y = ((i.y) / (double)(cam->size.y + (gen->offset / cam->ratio))) * cam->size.y - (cam->size.y / 2);
 					to_camera_space(&p, &c_s, cam);
@@ -167,8 +170,6 @@ int	process_app(void *venv)
 						d = (p.x * p.x) + (p.y * p.y) + (p.z * p.z);
 						color = get_color((p.z - zminmax.y) / (zminmax.x - zminmax.y));
 						camera_project_vertex(&c_s, &c, cam);
-						//	c.x = ((c.x) / (cam->size.x - 1 )) * (cam->size.x - 1);
-						//	c.y = ((c.y) / (cam->size.y - 1)) * (cam->size.y - 1);
 						p1.pos.x = (int)(c.x);
 						p1.pos.y = (int)(c.y);
 						p1.z = d;

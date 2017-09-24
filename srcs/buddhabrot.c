@@ -6,34 +6,23 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 00:56:07 by nboste            #+#    #+#             */
-/*   Updated: 2017/01/09 16:40:35 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/24 09:19:17 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buddhabrot.h"
 #include "drawer.h"
 
-/*static uint32	get_color(double ratio)
-{
-	return ((int)(0xFF * ratio) << 8);
-}
-*/
 void	init_buddhabrot(t_frac_gen *gen)
 {
 	gen->max.x = 0.6;
 	gen->max.y = 1.2;
 	gen->min.x = -2.1;
 	gen->min.y = -1.2;
-	gen->camera.pos.x = (gen->max.x - gen->min.x) / 2;
-	gen->camera.org.x = (gen->max.x - gen->min.x) / 2;
-	gen->camera.pos.y = (gen->max.y - gen->min.y) / 2;
-	gen->camera.org.y = (gen->max.y - gen->min.y) / 2;
-	gen->camera.zoom = 600;
 	gen->it = 1000;
 	gen->base_it = 1000;
+	gen->current = buddhabrot;
 }
-
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 static void	buddha_draw(unsigned int *pixels, t_env * env)
 {
