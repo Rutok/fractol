@@ -1,41 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol_gen.h                                      :+:      :+:    :+:   */
+/*   burning.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/20 14:01:25 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/25 15:17:14 by nboste           ###   ########.fr       */
+/*   Created: 2017/09/25 15:16:19 by nboste            #+#    #+#             */
+/*   Updated: 2017/09/25 15:16:51 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTALES_GENERATOR_H
-# define FRACTALES_GENERATOR_H
+#ifndef BURNING_H
+# define BURNING_H
 
-# include "types.h"
+# include "fractol_gen.h"
 
-typedef enum	e_fractales
-{
-	mandelbrot,
-	julia,
-	burning
-}				t_fractales;
+void	init_burning(t_frac_gen *gen);
 
-typedef struct	s_frac_gen
-{
-	t_2dpair	max;
-	t_2dpair	min;
-	int			it;
-	int			base_it;
-	t_fractales	current;
-	t_scene		scene;
-	t_bool		draw;
-	int			offset;
-}				t_frac_gen;
-
-void	init_app(t_env *env);
-
-int		process_app(void *env);
+void	process_burning(t_3dvertex *point, t_frac_gen *gen);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/24 08:51:32 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/25 16:52:38 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "error.h"
 #include "mandelbrot.h"
 #include "julia.h"
-#include "buddhabrot.h"
+#include "burning.h"
 #include "camera.h"
 #include "camera_drawer.h"
 #include <stdio.h>
@@ -57,9 +57,9 @@ static t_color get_color(double z)
 	t_color hsl;
 	unsigned char region, reminder, p, q, t;
 
-	hsl.r = round(120 * z);
-	hsl.g = 100;
-	hsl.b = 100;
+	hsl.r = round(z);
+	hsl.g = 100 * z;
+	hsl.b = 100 * z;
 	region = hsl.r / 43;
 	reminder = (hsl.r - (region * 43)) * 6;
 	p = (hsl.g * (255 - hsl.b)) >> 8;
@@ -88,9 +88,6 @@ default:
 
 	}
 	z *= 100;
-	c.r = (unsigned char)(sin(0.016 * z + 4) * 230 + 25);
-	c.g = (unsigned char)(sin(0.013 * z + 2) * 230 + 25);
-	c.b = (unsigned char)(sin(0.01 * z + 1) * 230 + 25);
 	return (c);
 }
 
@@ -106,7 +103,6 @@ int	process_app(void *venv)
 	t_color				color;
 	double				d;
 	t_point				p1;
-	t_2dpair			zminmax;
 
 	gen = (t_frac_gen *)env->app.d;
 	process_fractol_event(env);
@@ -114,13 +110,7 @@ int	process_app(void *venv)
 	{
 		printf("maxx: %f minx: %f maxy: %f miny: %f\n", gen->max.x, gen->min.x, gen->max.y, gen->min.y);
 		gen->draw = 0;
-		color.r = 0;
-		color.g = 10;
-		color.b = 10;
-		color.a = 0;
 		cam = &gen->scene.camera;
-		zminmax.y = 999999999;
-		zminmax.x = -999999999;
 		i.y = 0;
 		while (i.y < cam->size.y + (gen->offset / cam->ratio))
 		{
@@ -134,32 +124,8 @@ int	process_app(void *venv)
 					process_mandelbrot(&p, gen);
 				if (gen->current == julia)
 					process_julia(&p, gen);
-				if (p.z != -gen->it)
-				{
-					if(zminmax.x < p.z)
-						zminmax.x = p.z;
-					if(zminmax.y > p.z)
-						zminmax.y = p.z;
-				}
-				i.x++;
-			}
-			i.y++;
-		}
-
-		i.y = 0;
-		while (i.y < cam->size.y + (gen->offset / cam->ratio))
-		{
-			i.x = 0;
-			while (i.x < cam->size.x + (gen->offset))
-			{
-				p.x = (i.x / (double)((cam->size.x - 1) + gen->offset)) * (gen->max.x - gen->min.x) + gen->min.x;
-				p.y = ((cam->size.y - 1 + (gen->offset / cam->ratio) - i.y) / (double)(cam->size.y - 1 + (gen->offset / cam->ratio))) * (gen->max.y - gen->min.y) + gen->min.y;
-				p.z = 0;
-				if (gen->current == mandelbrot)
-					process_mandelbrot(&p, gen);
-				if (gen->current == julia)
-					process_julia(&p, gen);
-				color.r = 0;
+				if (gen->current == burning)
+					process_burning(&p, gen);
 				if (p.z != -gen->it)
 				{
 					p.x = ((i.x) / (double)(cam->size.x + gen->offset)) * cam->size.x - (cam->size.x / 2);
@@ -168,7 +134,7 @@ int	process_app(void *venv)
 					if (c_s.z > 0)
 					{
 						d = (p.x * p.x) + (p.y * p.y) + (p.z * p.z);
-						color = get_color((p.z - zminmax.y) / (zminmax.x - zminmax.y));
+						color = get_color(p.z);
 						camera_project_vertex(&c_s, &c, cam);
 						p1.pos.x = (int)(c.x);
 						p1.pos.y = (int)(c.y);

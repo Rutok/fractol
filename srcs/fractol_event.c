@@ -6,16 +6,16 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/24 08:51:04 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/25 16:46:57 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol_gen.h"
 #include "fractol_event.h"
 #include "libft.h"
-#include "mandelbrot.h"
+#include "burning.h"
 #include "julia.h"
-#include "buddhabrot.h"
+#include "mandelbrot.h"
 #include "vertex_utility.h"
 
 void	process_fractol_event(t_env *env)
@@ -31,7 +31,6 @@ void	process_fractol_event(t_env *env)
 	{
 		ev->exit = 1;
 		return;
-		//f->draw = 1;
 	}
 	/*static		t_2dpair off;
 	  if (ev->mouse.move)
@@ -86,18 +85,18 @@ void	process_fractol_event(t_env *env)
 	}
 	if (ev->keys[SDL_SCANCODE_PAGEUP])
 	{
-		f->max.x -= .1 * (f->max.x - f->min.x);
-		f->max.y -= .1 * (f->max.y - f->min.y);
-		f->min.x += .1 * (f->max.x - f->min.x);
-		f->min.y += .1 * (f->max.y - f->min.y);
+		f->max.x -= .1 * fabs(f->max.x - f->min.x);
+		f->max.y -= .1 * fabs(f->max.y - f->min.y);
+		f->min.x += .1 * fabs(f->max.x - f->min.x);
+		f->min.y += .1 * fabs(f->max.y - f->min.y);
 		f->draw = 1;
 	}
 	if (ev->keys[SDL_SCANCODE_PAGEDOWN])
 	{
-		f->max.x += .1 * (f->max.x - f->min.x);
-		f->max.y += .1 * (f->max.y - f->min.y);
-		f->min.x -= .1 * (f->max.x - f->min.x);
-		f->min.y -= .1 * (f->max.y - f->min.y);
+		f->max.x += .1 * fabs(f->max.x - f->min.x);
+		f->max.y += .1 * fabs(f->max.y - f->min.y);
+		f->min.x -= .1 * fabs(f->max.x - f->min.x);
+		f->min.y -= .1 * fabs(f->max.y - f->min.y);
 		f->draw = 1;
 	}
 	static int tmp_m;
@@ -140,6 +139,11 @@ void	process_fractol_event(t_env *env)
 	if (ev->keys[SDL_SCANCODE_F2])
 	{
 		init_julia(f);
+		f->draw = 1;
+	}
+	if (ev->keys[SDL_SCANCODE_F3])
+	{
+		init_burning(f);
 		f->draw = 1;
 	}
 }
