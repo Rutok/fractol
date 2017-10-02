@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/25 16:52:38 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/27 21:16:38 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,16 @@ void	init_app(t_env *env)
 	gen->offset = -700;
 }
 
-static t_color get_color(double z)
+static t_color get_color(double z, int it)
 {
 	t_color c;
 	t_color hsl;
 	unsigned char region, reminder, p, q, t;
 
-	hsl.r = round(z);
-	hsl.g = 100 * z;
-	hsl.b = 100 * z;
+	hsl.r = it;
+	hsl.r = 100 + round(fabs(z));
+	hsl.g = 100;
+	hsl.b = 100;
 	region = hsl.r / 43;
 	reminder = (hsl.r - (region * 43)) * 6;
 	p = (hsl.g * (255 - hsl.b)) >> 8;
@@ -134,7 +135,7 @@ int	process_app(void *venv)
 					if (c_s.z > 0)
 					{
 						d = (p.x * p.x) + (p.y * p.y) + (p.z * p.z);
-						color = get_color(p.z);
+						color = get_color(p.z, gen->it);
 						camera_project_vertex(&c_s, &c, cam);
 						p1.pos.x = (int)(c.x);
 						p1.pos.y = (int)(c.y);

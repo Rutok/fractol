@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 17:59:36 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/24 08:50:51 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/27 21:32:07 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	process_julia(t_3dvertex *point, t_frac_gen *gen)
 	i = 0;
 	z.x = point->x;
 	z.y = point->y;
-	point->x = 0.285;
+	point->x = 0.285 * gen->xratio;
 	point->y = 0.01;
 	while ((z.x * z.x + z.y * z.y) <= 4 && i < gen->it)
 	{

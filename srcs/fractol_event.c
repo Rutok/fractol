@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/25 16:46:57 by nboste           ###   ########.fr       */
+/*   Updated: 2017/09/27 21:40:19 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,33 +32,11 @@ void	process_fractol_event(t_env *env)
 		ev->exit = 1;
 		return;
 	}
-	/*static		t_2dpair off;
-	  if (ev->mouse.move)
-	  {
-	  t_2dpair	d;
-	  t_3dvertex	z;
-	  z.x = 0;
-	  z.y = 0;
-	  z.z = 1;
-	  d.x = ev->mouse.pos.x + off.x - (cam->size.x / 2);
-	  d.y = ev->mouse.pos.y + off.y - (cam->size.y / 2);
-	  off.x = d.x;
-	  off.y = d.y;
-	  if (d.x != 0 && d.y != 0)
-	  {
-	  d.x *= -cam->sensitivity;
-	  d.y *= -0.1;
-	  off.x /= 10;
-	  off.y /= 10;
-	  rotate_3dvertex(&cam->u, z, ft_degtorad(d.x));
-	  rotate_3dvertex(&cam->n, z, ft_degtorad(d.x));
-	  rotate_3dvertex(&cam->v, z, ft_degtorad(d.x));
-	  rotate_3dvertex(&cam->n, cam->u, ft_degtorad(d.y));
-	  rotate_3dvertex(&cam->v, cam->u, ft_degtorad(d.y));
-	  SDL_WarpMouseInWindow(NULL, cam->size.x / 2, cam->size.y / 2);
-	  f->draw = 1;
-	  }
-	  }*/
+	if (ev->mouse.move)
+	{
+		f->xratio = ev->mouse.pos.x / (double)env->win.size.x;
+		f->draw = 1;
+	}
 	if (ev->keys[SDL_SCANCODE_W])
 	{
 		f->max.y += 0.1 * (f->max.y - f->min.y);
@@ -146,4 +124,15 @@ void	process_fractol_event(t_env *env)
 		init_burning(f);
 		f->draw = 1;
 	}
+	if (ev->keys[SDL_SCANCODE_Y])
+	{
+		f->it += 100;
+		f->draw = 1;
+	}
+	if (ev->keys[SDL_SCANCODE_H])
+	{
+		f->it -= 100;
+		f->draw = 1;
+	}
+
 }
