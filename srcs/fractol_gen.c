@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/27 21:16:38 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/02 13:21:33 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,28 @@ void	init_app(t_env *env)
 	cam->speed = 50;
 	cam->sensitivity = 0.04;
 	gen->offset = -700;
+	if (env->app.argc == 2)
+	{
+		if (!ft_strcmp(env->app.argv[1], "mandelbrot"))
+		{
+			gen->current = mandelbrot;
+			init_mandelbrot(gen);
+		}
+		else if (!ft_strcmp(env->app.argv[1], "julia"))
+		{
+			gen->current = julia;
+			init_julia(gen);
+		}
+		else if (!ft_strcmp(env->app.argv[1], "burning"))
+		{
+			gen->current = burning;
+			init_burning(gen);
+		}
+		else
+			ft_exit("USAGE");
+	}
+	else
+		ft_exit("USAGE");
 }
 
 static t_color get_color(double z, int it)
@@ -109,7 +131,6 @@ int	process_app(void *venv)
 	process_fractol_event(env);
 	if (gen->draw)
 	{
-		printf("maxx: %f minx: %f maxy: %f miny: %f\n", gen->max.x, gen->min.x, gen->max.y, gen->min.y);
 		gen->draw = 0;
 		cam = &gen->scene.camera;
 		i.y = 0;
