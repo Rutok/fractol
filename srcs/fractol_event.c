@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2017/10/02 12:35:52 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/08 17:06:28 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,38 @@ void	process_fractol_event(t_env *env)
 		ev->exit = 1;
 		return;
 	}
+	if (ev->mouse.lclick || ev->keys[SDL_SCANCODE_PAGEUP])
+	{
+		t_2dpair center;
+		printf("ZOOM X = %d ; Y = %d\n", ev->mouse.pos.x, ev->mouse.pos.y);
+		ev->mouse.lclick = 0;
+		t_2dpair pos;
+		pos.x = ev->mouse.pos.x / (double)env->rend.size.x;
+		pos.y = ev->mouse.pos.y / (double)env->rend.size.y;
+		center.x = fabs(f->max.x - f->min.x) * pos.x + f->min.x;
+		center.y = fabs(f->max.y - f->min.y) * pos.y + f->min.y;
+		f->max.x = center.x + (fabs(f->max.x - f->min.x) * .7 / 2);
+		f->min.x = center.x - (fabs(f->max.x - f->min.x) * .7 / 2);
+		f->max.y = center.y + (fabs(f->max.y - f->min.y) * .7 / 2);
+		f->min.y = center.y - (fabs(f->max.y - f->min.y) * .7 / 2);
+		f->draw = 1;
+	}
+	if (ev->mouse.rclick || ev->keys[SDL_SCANCODE_PAGEDOWN])
+	{
+		t_2dpair center;
+		printf("DEZOOM X = %d ; Y = %d\n", ev->mouse.pos.x, ev->mouse.pos.y);
+		ev->mouse.rclick = 0;
+		t_2dpair pos;
+		pos.x = ev->mouse.pos.x / (double)env->rend.size.x;
+		pos.y = ev->mouse.pos.y / (double)env->rend.size.y;
+		center.x = fabs(f->max.x - f->min.x) * pos.x + f->min.x;
+		center.y = fabs(f->max.y - f->min.y) * pos.y + f->min.y;
+		f->max.x = center.x + (fabs(f->max.x - f->min.x) * 1.3 / 2);
+		f->min.x = center.x - (fabs(f->max.x - f->min.x) * 1.3 / 2);
+		f->max.y = center.y + (fabs(f->max.y - f->min.y) * 1.3 / 2);
+		f->min.y = center.y - (fabs(f->max.y - f->min.y) * 1.3 / 2);
+		f->draw = 1;
+	}
 	if (ev->mouse.move)
 	{
 		f->xratio = ev->mouse.pos.x / (double)env->win.size.x;
@@ -39,8 +71,8 @@ void	process_fractol_event(t_env *env)
 	}
 	if (ev->keys[SDL_SCANCODE_W])
 	{
-		f->max.y += 0.1 * (f->max.y - f->min.y);
-		f->min.y += 0.1 * (f->max.y - f->min.y);
+		f->max.y -= 0.1 * (f->max.y - f->min.y);
+		f->min.y -= 0.1 * (f->max.y - f->min.y);
 		f->draw = 1;
 	}
 	if (ev->keys[SDL_SCANCODE_A])
@@ -51,30 +83,14 @@ void	process_fractol_event(t_env *env)
 	}
 	if (ev->keys[SDL_SCANCODE_S])
 	{
-		f->max.y -= 0.1 * (f->max.y - f->min.y);
-		f->min.y -= 0.1 * (f->max.y - f->min.y);
+		f->max.y += 0.1 * (f->max.y - f->min.y);
+		f->min.y += 0.1 * (f->max.y - f->min.y);
 		f->draw = 1;
 	}
 	if (ev->keys[SDL_SCANCODE_D])
 	{
 		f->max.x += 0.1 * (f->max.x - f->min.x);
 		f->min.x += 0.1 * (f->max.x - f->min.x);
-		f->draw = 1;
-	}
-	if (ev->keys[SDL_SCANCODE_PAGEUP])
-	{
-		f->max.x -= .1 * fabs(f->max.x - f->min.x);
-		f->max.y -= .1 * fabs(f->max.y - f->min.y);
-		f->min.x += .1 * fabs(f->max.x - f->min.x);
-		f->min.y += .1 * fabs(f->max.y - f->min.y);
-		f->draw = 1;
-	}
-	if (ev->keys[SDL_SCANCODE_PAGEDOWN])
-	{
-		f->max.x += .1 * fabs(f->max.x - f->min.x);
-		f->max.y += .1 * fabs(f->max.y - f->min.y);
-		f->min.x -= .1 * fabs(f->max.x - f->min.x);
-		f->min.y -= .1 * fabs(f->max.y - f->min.y);
 		f->draw = 1;
 	}
 	static int tmp_m;
@@ -134,5 +150,4 @@ void	process_fractol_event(t_env *env)
 		f->it -= 100;
 		f->draw = 1;
 	}
-
 }
