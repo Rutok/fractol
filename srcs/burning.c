@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/25 15:15:18 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/25 15:16:03 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/08 17:27:47 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	init_burning(t_frac_gen *gen)
 
 void	process_burning(t_3dvertex *point, t_frac_gen *gen)
 {
-	t_2dpair		z;
-	t_2dpair		tmp;
+	t_2dpair	z;
+	t_2dpair	tmp;
 	int			i;
 
 	i = 0;

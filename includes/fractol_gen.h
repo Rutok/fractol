@@ -6,14 +6,16 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:01:25 by nboste            #+#    #+#             */
-/*   Updated: 2017/09/27 21:30:45 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/08 18:29:18 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTALES_GENERATOR_H
-# define FRACTALES_GENERATOR_H
+#ifndef FRACTOL_GEN_H
+# define FRACTOL_GEN_H
 
 # include "types.h"
+
+# define USAGE "./fractol [fractal name]\n[mandelbrot] [julia] [burning]"
 
 typedef enum	e_fractales
 {
@@ -35,8 +37,8 @@ typedef struct	s_frac_gen
 	double		xratio;
 }				t_frac_gen;
 
-void	init_app(t_env *env);
+void			init_app(t_env *env);
 
-int		process_app(void *env);
+int				process_app(void *env);
 
 #endif

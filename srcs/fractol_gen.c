@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/10/02 13:21:33 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/08 18:23:45 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,14 @@
 #include "camera_drawer.h"
 #include <stdio.h>
 
-void	init_app(t_env *env)
+static void		init_cam(t_env *env)
 {
-	t_frac_gen	*gen;
 	t_camera	*cam;
+	t_frac_gen	*gen;
 
 	if (!(env->app.d = malloc(sizeof(t_frac_gen))))
 		ft_exit(MSG_MALLOC);
 	gen = (t_frac_gen *)env->app.d;
-	gen->draw = 1;
-	init_mandelbrot(gen);
 	cam = &gen->scene.camera;
 	init_camera(env, ft_degtorad(135), &gen->scene.camera);
 	cam->pos.x = 0;
@@ -48,41 +46,41 @@ void	init_app(t_env *env)
 	cam->projection = parallel;
 	cam->speed = 50;
 	cam->sensitivity = 0.04;
+	gen->draw = 1;
 	gen->offset = -700;
-	if (env->app.argc == 2)
-	{
-		if (!ft_strcmp(env->app.argv[1], "mandelbrot"))
-		{
-			gen->current = mandelbrot;
-			init_mandelbrot(gen);
-		}
-		else if (!ft_strcmp(env->app.argv[1], "julia"))
-		{
-			gen->current = julia;
-			init_julia(gen);
-		}
-		else if (!ft_strcmp(env->app.argv[1], "burning"))
-		{
-			gen->current = burning;
-			init_burning(gen);
-		}
-		else
-			ft_exit("USAGE");
-	}
-	else
-		ft_exit("USAGE");
 }
 
-static t_color get_color(double z, int it)
+void			init_app(t_env *env)
 {
-	t_color c;
-	t_color hsl;
+	t_frac_gen	*gen;
+
+	init_cam(env);
+	gen = (t_frac_gen *)env->app.d;
+	if (env->app.argc != 2)
+		ft_exit(USAGE);
+	if (!ft_strcmp(env->app.argv[1], "mandelbrot"))
+	{
+		gen->current = mandelbrot;
+		init_mandelbrot(gen);
+	}
+	else if (!ft_strcmp(env->app.argv[1], "julia"))
+	{
+		gen->current = julia;
+		init_julia(gen);
+	}
+	else if (!ft_strcmp(env->app.argv[1], "burning"))
+	{
+		gen->current = burning;
+		init_burning(gen);
+	}
+	else
+		ft_exit(USAGE);
+}
+
+static t_color	get_color_more(t_color hsl, t_color c)
+{
 	unsigned char region, reminder, p, q, t;
 
-	hsl.r = it;
-	hsl.r = 100 + round(fabs(z));
-	hsl.g = 100;
-	hsl.b = 100;
 	region = hsl.r / 43;
 	reminder = (hsl.r - (region * 43)) * 6;
 	p = (hsl.g * (255 - hsl.b)) >> 8;
@@ -93,28 +91,39 @@ static t_color get_color(double z, int it)
 		case 0:
 			c.r = hsl.b; c.g = t; c.b = p;
 			break;
-case 1:
+		case 1:
 			c.r = q; c.g = hsl.b; c.b = p;
 			break;
-case 2:
+		case 2:
 			c.r = p; c.g = hsl.b; c.b = t;
 			break;
-case 3:
+		case 3:
 			c.r = p; c.g = q; c.b = hsl.b;
 			break;
-case 4:
+		case 4:
 			c.r = t; c.g = p; c.b = hsl.b;
 			break;
-default:
+		default:
 			c.r = hsl.b; c.g = p; c.b = q;
 			break;
-
 	}
-	z *= 100;
 	return (c);
 }
 
-int	process_app(void *venv)
+static t_color	get_color(double z)
+{
+	t_color c;
+	t_color hsl;
+
+	hsl.r = 100 + round(fabs(z));
+	hsl.g = 100;
+	hsl.b = 100;
+	c.r = 0;
+//	return (hsl);
+	return (get_color_more(hsl, c));
+}
+
+int				process_app(void *venv)
 {
 	t_env *env = (t_env *)venv;
 	t_frac_gen			*gen;
@@ -156,7 +165,7 @@ int	process_app(void *venv)
 					if (c_s.z > 0)
 					{
 						d = (p.x * p.x) + (p.y * p.y) + (p.z * p.z);
-						color = get_color(p.z, gen->it);
+						color = get_color(p.z);
 						camera_project_vertex(&c_s, &c, cam);
 						p1.pos.x = (int)(c.x);
 						p1.pos.y = (int)(c.y);
