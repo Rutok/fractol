@@ -8,6 +8,7 @@ SRC = srcs/main.c \
 	  srcs/mandelbrot.c \
 	  srcs/julia.c \
 	  srcs/burning.c \
+	  srcs/colors.c \
 
 
 OBJ = $(SRC:%.c=%.o)

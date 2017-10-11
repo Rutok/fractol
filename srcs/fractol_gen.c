@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:35 by nboste            #+#    #+#             */
-/*   Updated: 2017/10/08 18:23:45 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/11 15:58:33 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,106 +77,66 @@ void			init_app(t_env *env)
 		ft_exit(USAGE);
 }
 
-static t_color	get_color_more(t_color hsl, t_color c)
+static void		process_point(t_3dvertex *p, t_frac_gen *gen)
 {
-	unsigned char region, reminder, p, q, t;
-
-	region = hsl.r / 43;
-	reminder = (hsl.r - (region * 43)) * 6;
-	p = (hsl.g * (255 - hsl.b)) >> 8;
-	q = (hsl.g * (255 - ((hsl.b * reminder) >> 8))) >> 8;
-	t = (hsl.g * (255 - ((hsl.g * (255 - reminder)) >> 8 ))) >> 8;
-	switch (region)
-	{
-		case 0:
-			c.r = hsl.b; c.g = t; c.b = p;
-			break;
-		case 1:
-			c.r = q; c.g = hsl.b; c.b = p;
-			break;
-		case 2:
-			c.r = p; c.g = hsl.b; c.b = t;
-			break;
-		case 3:
-			c.r = p; c.g = q; c.b = hsl.b;
-			break;
-		case 4:
-			c.r = t; c.g = p; c.b = hsl.b;
-			break;
-		default:
-			c.r = hsl.b; c.g = p; c.b = q;
-			break;
-	}
-	return (c);
+	if (gen->current == mandelbrot)
+		process_mandelbrot(p, gen);
+	if (gen->current == julia)
+		process_julia(p, gen);
+	if (gen->current == burning)
+		process_burning(p, gen);
 }
 
-static t_color	get_color(double z)
+static void		p_more(t_procp p, t_camera *cam, t_frac_gen *gen, t_env *env)
 {
-	t_color c;
-	t_color hsl;
-
-	hsl.r = 100 + round(fabs(z));
-	hsl.g = 100;
-	hsl.b = 100;
-	c.r = 0;
-//	return (hsl);
-	return (get_color_more(hsl, c));
+	p.p.x = (p.i.x / (double)((cam->size.x - 1) + gen->offset))
+		* (gen->max.x - gen->min.x) + gen->min.x;
+	p.p.y = ((cam->size.y - 1 + (gen->offset / cam->ratio) - p.i.y)
+			/ (double)(cam->size.y - 1 + (gen->offset / cam->ratio)))
+		* (gen->max.y - gen->min.y) + gen->min.y;
+	p.p.z = 0;
+	process_point(&p.p, gen);
+	p.p.x = ((p.i.x) / (double)(cam->size.x + gen->offset))
+		* cam->size.x - (cam->size.x / 2);
+	p.p.y = ((p.i.y) / (double)(cam->size.y + (gen->offset / cam->ratio)))
+		* cam->size.y - (cam->size.y / 2);
+	to_camera_space(&p.p, &p.c_s, cam);
+	if (p.p.z != -gen->it && p.c_s.z > 0)
+	{
+		p.d = (p.p.x * p.p.x) + (p.p.y * p.p.y) + (p.p.z * p.p.z);
+		p.color = get_color(p.p.z);
+		camera_project_vertex(&p.c_s, &p.c, cam);
+		p.p1.pos.x = (int)(p.c.x);
+		p.p1.pos.y = (int)(p.c.y);
+		p.p1.z = p.d;
+		p.p1.c = p.color;
+		camera_draw_point(&p.p1, cam, env);
+	}
 }
 
 int				process_app(void *venv)
 {
-	t_env *env = (t_env *)venv;
-	t_frac_gen			*gen;
-	t_camera			*cam;
-	t_3dvertex			p;
-	t_3dvertex			c_s;
-	t_2ipair			i;
-	t_2dpair			c;
-	t_color				color;
-	double				d;
-	t_point				p1;
+	t_env		*env;
+	t_frac_gen	*gen;
+	t_camera	*cam;
+	t_procp		p;
 
+	env = (t_env *)venv;
 	gen = (t_frac_gen *)env->app.d;
+	cam = &gen->scene.camera;
 	process_fractol_event(env);
 	if (gen->draw)
 	{
 		gen->draw = 0;
-		cam = &gen->scene.camera;
-		i.y = 0;
-		while (i.y < cam->size.y + (gen->offset / cam->ratio))
+		p.i.y = 0;
+		while (p.i.y < cam->size.y + (gen->offset / cam->ratio))
 		{
-			i.x = 0;
-			while (i.x < cam->size.x + (gen->offset))
+			p.i.x = -1;
+			while (++p.i.x < cam->size.x + (gen->offset))
 			{
-				p.x = (i.x / (double)((cam->size.x - 1) + gen->offset)) * (gen->max.x - gen->min.x) + gen->min.x;
-				p.y = ((cam->size.y - 1 + (gen->offset / cam->ratio) - i.y) / (double)(cam->size.y - 1 + (gen->offset / cam->ratio))) * (gen->max.y - gen->min.y) + gen->min.y;
-				p.z = 0;
-				if (gen->current == mandelbrot)
-					process_mandelbrot(&p, gen);
-				if (gen->current == julia)
-					process_julia(&p, gen);
-				if (gen->current == burning)
-					process_burning(&p, gen);
-				if (p.z != -gen->it)
-				{
-					p.x = ((i.x) / (double)(cam->size.x + gen->offset)) * cam->size.x - (cam->size.x / 2);
-					p.y = ((i.y) / (double)(cam->size.y + (gen->offset / cam->ratio))) * cam->size.y - (cam->size.y / 2);
-					to_camera_space(&p, &c_s, cam);
-					if (c_s.z > 0)
-					{
-						d = (p.x * p.x) + (p.y * p.y) + (p.z * p.z);
-						color = get_color(p.z);
-						camera_project_vertex(&c_s, &c, cam);
-						p1.pos.x = (int)(c.x);
-						p1.pos.y = (int)(c.y);
-						p1.z = d;
-						p1.c = color;
-						camera_draw_point(&p1, cam, env);
-					}
-				}
-				i.x++;
+				p_more(p, cam, gen, env);
 			}
-			i.y++;
+			p.i.y++;
 		}
 		drawer_wait_copy(env, cam);
 	}
