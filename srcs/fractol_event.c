@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2017/10/08 18:00:33 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/11 14:59:37 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,23 @@
 static void		process_mouse_event(t_event *ev, t_frac_gen *f, t_env *env)
 {
 	double		s;
-	t_2dpair	center;
 	t_2dpair	pos;
+	t_2dpair	l;
 
-	if (ev->mouse.lclick || ev->keys[SDL_SCANCODE_PAGEUP] ||
-		ev->mouse.rclick || ev->keys[SDL_SCANCODE_PAGEDOWN])
+	l.x = fabs(f->max.x - f->min.x) * 1000;
+	l.y = fabs(f->max.y - f->min.y) * 1000;
+	if (ev->mouse.wup || ev->keys[SDL_SCANCODE_PAGEUP] ||
+		ev->mouse.wdown || ev->keys[SDL_SCANCODE_PAGEDOWN])
 	{
 		s = 1.3;
-		if (ev->mouse.lclick || ev->keys[SDL_SCANCODE_PAGEUP])
+		if (ev->mouse.wup || ev->keys[SDL_SCANCODE_PAGEUP])
 			s = .7;
-		pos.x = ev->mouse.pos.x / (double)env->rend.size.x;
-		pos.y = ev->mouse.pos.y / (double)env->rend.size.y;
-		center.x = fabs(f->max.x - f->min.x) * pos.x + f->min.x;
-		center.y = fabs(f->max.y - f->min.y) * pos.y + f->min.y;
-		f->max.x = center.x + (fabs(f->max.x - f->min.x) * s / 2);
-		f->min.x = center.x - (fabs(f->max.x - f->min.x) * s / 2);
-		f->max.y = center.y + (fabs(f->max.y - f->min.y) * s / 2);
-		f->min.y = center.y - (fabs(f->max.y - f->min.y) * s / 2);
+		pos.x = (ev->mouse.pos.x / (double)env->rend.size.x);
+		pos.y = (ev->mouse.pos.y / (double)env->rend.size.y);
+		f->max.x = l.x * pos.x / 1000 + f->min.x + (l.x / 2000. * s);
+		f->min.x = l.x * pos.x / 1000 + f->min.x - (l.x / 2000. * s);
+		f->max.y = l.y * pos.y / 1000 + f->min.y + (l.y / 2000. * s);
+		f->min.y = l.y * pos.y / 1000 + f->min.y - (l.y / 2000. * s);
 		f->draw = 1;
 	}
 	if (ev->mouse.move)
