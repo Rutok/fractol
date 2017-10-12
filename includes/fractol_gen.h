@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:01:25 by nboste            #+#    #+#             */
-/*   Updated: 2017/10/11 15:58:58 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/12 11:32:57 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "types.h"
 
-# define USAGE "./fractol [fractal name]\n[mandelbrot] [julia] [burning]"
+# define USAGE "Usage: ./fractol [fractal name]\nFractals: [mandelbrot] [julia] [burning]"
 
 typedef enum	e_fractales
 {
