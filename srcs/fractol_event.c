@@ -6,7 +6,7 @@
 /*   By: nboste <nboste@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 14:02:17 by nboste            #+#    #+#             */
-/*   Updated: 2017/10/11 14:59:37 by nboste           ###   ########.fr       */
+/*   Updated: 2017/10/12 12:15:27 by nboste           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,29 @@ static void		process_mouse_event(t_event *ev, t_frac_gen *f, t_env *env)
 
 static void		process_mvt_keys(t_event *ev, t_frac_gen *f)
 {
+	t_2dpair	diff;
+
+	diff.x = f->max.x - f->min.x;
+	diff.y = f->max.y - f->min.y;
 	if (ev->keys[SDL_SCANCODE_W])
 	{
-		f->max.y -= 0.1 * (f->max.y - f->min.y);
-		f->min.y -= 0.1 * (f->max.y - f->min.y);
-		f->draw = 1;
+		f->max.y -= 0.1 * diff.y;
+		f->min.y -= 0.1 * diff.y;
 	}
 	if (ev->keys[SDL_SCANCODE_A])
 	{
-		f->max.x -= 0.1 * (f->max.x - f->min.x);
-		f->min.x -= 0.1 * (f->max.x - f->min.x);
-		f->draw = 1;
+		f->max.x -= 0.1 * diff.x;
+		f->min.x -= 0.1 * diff.x;
 	}
 	if (ev->keys[SDL_SCANCODE_S])
 	{
-		f->max.y += 0.1 * (f->max.y - f->min.y);
-		f->min.y += 0.1 * (f->max.y - f->min.y);
-		f->draw = 1;
+		f->max.y += 0.1 * diff.y;
+		f->min.y += 0.1 * diff.y;
 	}
 	if (ev->keys[SDL_SCANCODE_D])
 	{
-		f->max.x += 0.1 * (f->max.x - f->min.x);
-		f->min.x += 0.1 * (f->max.x - f->min.x);
-		f->draw = 1;
+		f->max.x += 0.1 * diff.x;
+		f->min.x += 0.1 * diff.x;
 	}
 }
 
@@ -98,6 +98,9 @@ static void		process_more_keys(t_event *ev, t_frac_gen *f)
 		f->offset -= 100;
 		f->draw = 1;
 	}
+	if (ev->keys[SDL_SCANCODE_W] || ev->keys[SDL_SCANCODE_A]
+			|| ev->keys[SDL_SCANCODE_S] || ev->keys[SDL_SCANCODE_D])
+		f->draw = 1;
 }
 
 static void		process_more_again(t_event *ev, t_frac_gen *f)
